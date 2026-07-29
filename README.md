@@ -1,25 +1,24 @@
 # Placement Eligibility Checker
 
-A console-based C++ application that manages student and 
-company records and automatically checks placement eligibility.
+A console-based C++ application to manage students and companies and check placement eligibility based on company criteria.
 
 ## Features
-- Add, view, search, delete students
-- Add, view, delete companies
-- Automatic eligibility check based on CGPA, 12th %, 
-  10th %, and backlog criteria
-- Persistent file storage using file handling
 
-## Algorithm
-- O(n x m) eligibility check where n = students, 
-  m = companies
-- Checks CGPA, academic percentages, and backlogs 
-  against each company's criteria
+- Add Student
+- Add Company
+- Check Placement Eligibility
+- Search Student
+- Search Company
+- Sort Companies by Package
+- Store Data using CSV Files
+- Menu-Driven Interface
+- Input Validation
 
-## Tech Stack
-- Language: C++
-- Concepts: OOP, Classes, Vectors, File Handling, STL
+## Technologies Used
 
-## How to Run
-g++ main.cpp student.cpp company.cpp -o project
-./project
+- C++
+- Object-Oriented Programming (OOP)
+- STL (Vector, String)
+- File Handling (CSV)
+
+## Project Structure
