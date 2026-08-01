@@ -37,7 +37,7 @@ void Company::display() const{
         if(i != eligible_Branches.size()-1) std::cout<<" , ";
     }
     std::cout<<std::endl;
-    std::cout<<"Packages          : "<<Packages<<std::endl;
+    std::cout<<"Packages (In LPA) : "<<Packages<<std::endl;
     std::cout<<"Role              : "<<Role<<std::endl;
 }
 //UTILITY FUNCTION CHECKING
