@@ -2,14 +2,16 @@
 #include "eligibilitychecker.h"
 #include<iostream>
 #include<algorithm>
+
 bool applicationexists(const std::vector<Application>& apps,const std::string& roll_no,const std::string& company_name){
     for(const auto& x: apps){
         if(x.get_roll_no() == roll_no && x.get_company_name() == company_name) return true;
     }
     return false;
 }
+
 bool applytocompany(std::vector<Application>& apps,std::vector<Student>& students,std::vector<Company>& companies,const std::string& roll_no,const std::string& company_name){
-     Student* student = nullptr;
+    Student* student = nullptr;
     Company* company = nullptr;
 
     for (auto& s : students) if (s.get_Roll_No() == roll_no) student = &s;
@@ -43,4 +45,4 @@ void viewapplicationforstudents(const std::vector<Application>& apps, const std:
         }
     }
     if (!found) std::cout << "No applications found for this student.\n";
-} 
+}
