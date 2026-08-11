@@ -31,7 +31,7 @@ void registerstudents(std::vector<Student>& students){
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         } else break;
     }
-     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Enter Branch: ";
     std::getline(std::cin, branch);
 
@@ -51,7 +51,10 @@ void registerstudents(std::vector<Student>& students){
 
     std::string current;
     for (char c : skillsLine) {
-        if (c == ',') { skills.push_back(current); current.clear(); }
+        if (c == ',') { 
+            skills.push_back(current); 
+            current.clear(); 
+        }
         else current += c;
     }
     if (!current.empty()) skills.push_back(current);
