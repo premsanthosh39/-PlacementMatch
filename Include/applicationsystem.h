@@ -9,5 +9,7 @@ bool applicationexists(const std::vector<Application>& apps, const std::string& 
 bool applytocompany(std::vector<Application>& apps, std::vector<Student>& students,
 std::vector<Company>& companies, const std::string& roll_no, const std::string& company_name);
 void viewapplicationforstudents(const std::vector<Application>& apps, const std::string& rollNo);
+bool updateApplicationStatus(std::vector<Application>& apps, const std::string& roll_no, const std::string& company_name, const std::string& newStatus);
+bool deleteApplication(std::vector<Application>& apps, const std::string& roll_no, const std::string& company_name);
 
 #endif

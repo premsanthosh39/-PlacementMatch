@@ -48,7 +48,7 @@ std::vector<Student> loadStudents(const std::string& filename) {
         double cgpa = std::stod(fields[2]);
         std::string branch = fields[3];
         int backlogs = std::stoi(fields[4]);
-
+        int gradYear = fields.size() > 6 ? std::stoi(fields[6]) : 0;  
         std::vector<std::string> skills;
         std::string current;
         for (char c : fields[5]) {
@@ -57,18 +57,18 @@ std::vector<Student> loadStudents(const std::string& filename) {
         }
         if (!current.empty()) skills.push_back(current);
 
-        students.push_back(Student(rollNo, name, cgpa, branch, backlogs, skills));
+        students.push_back(Student(rollNo, name, cgpa, branch, backlogs, skills,gradYear));
     }
     return students;
 }
 
 void saveStudents(const std::vector<Student>& students, const std::string& filename) {
     std::ofstream file(filename); // overwrites the file
-    file << "RollNo,Name,CGPA,Branch,Backlogs,Skills\n";
+    file << "RollNo,Name,CGPA,Branch,Backlogs,Skills,graduation_year\n";
 
     for (const auto& s : students) {
         file << s.get_Roll_No() << "," << s.get_Name() << "," << s.get_Cgpa() << ","
-             << s.get_Branch() << "," << s.get_Backlogs() << ",\"";
+             << s.get_Branch() << "," << s.get_Backlogs() << ",\""<<s.get_Graduation_Year()<<",\"";
         auto skills = s.get_Skills();
         for (size_t i = 0; i < skills.size(); i++) {
             file << skills[i];
@@ -107,15 +107,17 @@ std::vector<Company> loadCompanies(const std::string& filename) {
 
         double package = std::stod(fields[4]);
         std::string role = fields[5];
+        int eligibleYear = fields.size() > 6 ? std::stoi(fields[6]) : 0;
 
-        companies.push_back(Company(name, minCgpa, maxBacklogs, branches, package, role));
+
+        companies.push_back(Company(name, minCgpa, maxBacklogs, branches, package, role,eligibleYear));
     }
     return companies;
 }
 
 void saveCompanies(const std::vector<Company>& companies, const std::string& filename) {
     std::ofstream file(filename);
-    file << "Name,MinCGPA,MaxBacklogs,Branches,Package,Role\n";
+    file << "Name,MinCGPA,MaxBacklogs,Branches,Package,Role,eligible_Year\n";
 
     for (const auto& c : companies) {
         file << c.get_Company_Name() << "," << c.get_min_Cgpa() << "," << c.get_max_Backlogs() << ",\"";
@@ -124,6 +126,6 @@ void saveCompanies(const std::vector<Company>& companies, const std::string& fil
             file << branches[i];
             if (i != branches.size() - 1) file << ",";
         }
-        file << "\"," << c.get_Packages() << "," << c.get_Role() << "\n";
+        file << "\"," << c.get_Packages() << "," << c.get_Role() <<  c.get_Eligible_Graduation_Year() << "\n";
     }
 }

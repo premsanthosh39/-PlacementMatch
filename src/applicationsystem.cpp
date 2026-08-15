@@ -46,3 +46,27 @@ void viewapplicationforstudents(const std::vector<Application>& apps, const std:
     }
     if (!found) std::cout << "No applications found for this student.\n";
 }
+
+bool updateApplicationStatus(std::vector<Application>& apps, const std::string& roll_no, const std::string& company_name, const std::string& newStatus) {
+    for (auto& a : apps) {
+        if (a.get_roll_no() == roll_no && a.get_company_name() == company_name) {
+            a.set_status(newStatus);
+            std::cout << "Application status updated to: " << newStatus << "\n";
+            return true;
+        }
+    }
+    std::cout << "Application not found.\n";
+    return false;
+}
+
+bool deleteApplication(std::vector<Application>& apps, const std::string& roll_no, const std::string& company_name) {
+    for (auto it = apps.begin(); it != apps.end(); ++it) {
+        if (it->get_roll_no() == roll_no && it->get_company_name() == company_name) {
+            apps.erase(it);
+            std::cout << "Application withdrawn/deleted.\n";
+            return true;
+        }
+    }
+    std::cout << "Application not found.\n";
+    return false;
+}

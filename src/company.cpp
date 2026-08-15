@@ -2,7 +2,7 @@
 #include<iostream>
 #include<algorithm>//FOR FIND FUNCTION WE USED IT 
 //CONSTRUCTOR INITIALIZATION
-Company::Company(std::string Company_Name,double min_Cgpa,int max_Backlogs,std::vector<std::string> eligible_Branches,double Packages,std::string Role) :Company_Name(Company_Name),min_Cgpa(min_Cgpa),max_Backlogs(max_Backlogs),eligible_Branches(eligible_Branches),Packages(Packages),Role(Role) {}
+Company::Company(std::string Company_Name,double min_Cgpa,int max_Backlogs,std::vector<std::string> eligible_Branches,double Packages,std::string Role,int Eligible_Graduation_Year) :Company_Name(Company_Name),min_Cgpa(min_Cgpa),max_Backlogs(max_Backlogs),eligible_Branches(eligible_Branches),Packages(Packages),Role(Role),Eligible_Graduation_Year(Eligible_Graduation_Year) {}
 //RETURNS THE GETTERS
 std::string Company::get_Company_Name() const {return Company_Name;} 
 double Company::get_min_Cgpa() const {return min_Cgpa;}
@@ -10,6 +10,8 @@ int Company::get_max_Backlogs() const {return max_Backlogs;}
 std::vector<std::string> Company::get_eligible_Branches() const {return eligible_Branches;}
 double Company::get_Packages() const {return Packages;}
 std::string Company::get_Role() const {return Role;}
+int Company::get_Eligible_Graduation_Year() const {return Eligible_Graduation_Year;}
+
 //UPDATING THE SETTERS
 void Company::set_Cgpa(double newcgpa){
     min_Cgpa = newcgpa;
@@ -23,6 +25,8 @@ void Company::set_Packages(double newpackages){
 void Company::set_eligible_Branches(std::vector<std::string> newbranches){
     eligible_Branches = newbranches;
 }
+
+void Company::set_Eligible_Graduation_Year(int newYear){ Eligible_Graduation_Year = newYear; }
 //DISPLAYING THE COMPANY DETAILS
 void Company::display() const{
     std::cout<<"\n-----------------------------------------------------------------------------------------------------------------\n";
@@ -39,6 +43,7 @@ void Company::display() const{
     std::cout<<std::endl;
     std::cout<<"Packages (In LPA) : "<<Packages<<std::endl;
     std::cout<<"Role              : "<<Role<<std::endl;
+    std::cout<<"Eligible Grad Year  : "<<Eligible_Graduation_Year<<std::endl;
 }
 //UTILITY FUNCTION CHECKING
 bool Company::isbrancheligible(const std::string& branch) const{

@@ -68,6 +68,16 @@ void registercompanies(std::vector<Company>& companies){
     std::cout << "Enter Role: ";
     std::getline(std::cin, role);
 
-    companies.push_back(Company(name, min_cgpa, max_backlogs, branches, package, role));
+    int eligibleYear;
+    while (true) {
+        std::cout << "Enter Eligible Graduation Year (e.g. 2026): ";
+        if (!(std::cin >> eligibleYear) || eligibleYear < 2000 || eligibleYear > 2100) {
+            std::cout << "Invalid year. Try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else break;
+    }
+
+    companies.push_back(Company(name, min_cgpa, max_backlogs, branches, package, role,eligibleYear));
     std::cout << "Company registered successfully.\n";
 }

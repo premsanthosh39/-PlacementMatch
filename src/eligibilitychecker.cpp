@@ -9,5 +9,8 @@ eligibilityresult eligibilitychecker(const Student& s,const Company& c){
     if(!c.isbrancheligible(s.get_Branch())){
         return {false,"student branch("+s.get_Branch()+") is not eligible for this company\n"};
     }
+    if (s.get_Graduation_Year() != c.get_Eligible_Graduation_Year()) {
+        return { false, "Graduation year mismatch (company recruits " + std::to_string(c.get_Eligible_Graduation_Year()) + " batch)" };
+    }
     return {true,"you are elibile for this company\n"};
 }

@@ -34,11 +34,11 @@ void searchCompanyByName(const std::vector<Company>& companies, const std::strin
     }
     if (!found) std::cout << "No matching company found.\n"; 
 }
-    std::vector<Company> getCompaniesSortedByPackage(const std::vector<Company>& companies) {
-        std::vector<Company> sorted = companies;  
-        std::sort(sorted.begin(), sorted.end(),
-            [](const Company& a, const Company& b) {
-                return a.get_Packages() > b.get_Packages();  
-            });
-        return sorted;
-    }
+std::vector<Company> getCompaniesSortedByPackage(const std::vector<Company>& companies) {
+    std::vector<Company> sorted = companies;
+    std::sort(sorted.begin(), sorted.end(),
+        [](const Company& a, const Company& b) {
+            return a.get_Packages() > b.get_Packages();
+        });
+    return sorted;
+}

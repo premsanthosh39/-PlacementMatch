@@ -49,6 +49,15 @@ void registerstudents(std::vector<Student>& students){
     std::string skillsLine;
     std::getline(std::cin, skillsLine);
 
+    int gradYear;
+    while (true) {
+        std::cout << "Enter Graduation Year (e.g. 2026): ";
+        if (!(std::cin >> gradYear) || gradYear < 2000 || gradYear > 2100) {
+            std::cout << "Invalid year. Try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else break;
+    }
     std::string current;
     for (char c : skillsLine) {
         if (c == ',') { 
@@ -59,6 +68,6 @@ void registerstudents(std::vector<Student>& students){
     }
     if (!current.empty()) skills.push_back(current);
 
-    students.push_back(Student(rollno, name, cgpa, branch, backlogs, skills));
+    students.push_back(Student(rollno, name, cgpa, branch, backlogs, skills,gradYear));
     std::cout << "Student registered successfully.\n";
 }
