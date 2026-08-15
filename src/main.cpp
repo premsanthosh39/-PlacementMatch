@@ -10,6 +10,8 @@
 #include <iostream>
 #include <limits>
 #include <unordered_map>
+#include<queue>
+#include<utility>
 
 Student* findStudentByRoll(std::unordered_map<std::string, Student*>& index, const std::string& rollNo) {
     auto it = index.find(rollNo);
@@ -81,6 +83,25 @@ void deleteCompany(std::vector<Company>& companies, const std::string& name) {
     std::cout << "Company not found.\n";
 }
 
+void showEligibleCompaniesRanked(std::vector<Company>& companies, Student& student) {
+    std::priority_queue<std::pair<double,std::string>> pq;
+    for(auto& c : companies){
+        eligibilityresult r = eligibilitychecker(student,c);
+        if(r.eligible){
+            pq.push({c.get_Packages(),c.get_Company_Name()});
+        }
+    }
+    if(pq.empty()){
+        std::cout<<"No eligible companies for "<<student.get_Name()<<std::endl;
+        return;
+    }
+    std::cout << "\nEligible companies for " << student.get_Name() << " (highest package first):\n";
+    while (!pq.empty()) {
+        auto top = pq.top();
+        std::cout << top.second << " - " << top.first << " LPA\n";
+        pq.pop();
+    }
+}
 int main() {
     std::vector<Student> students = loadStudents("data/students.csv");
     std::vector<Company> companies = loadCompanies("data/companies.csv");
@@ -114,7 +135,8 @@ int main() {
         std::cout << "15. Delete Company\n";
         std::cout << "16. Update Application Status\n";
         std::cout << "17. Delete/Withdraw Application\n";
-        std::cout << "18. Exit\n";
+        std::cout << "18. Eligible companies for a student\n";
+        std::cout << "19. Exit\n";
         std::cout << "Enter choice: ";
 
         int choice;
@@ -284,7 +306,17 @@ int main() {
                 saveApplications(applications, "data/applications.csv");
                 break;
             }
-            case 18:
+            case 18: {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::string rollNo;
+                std::cout << "Enter Roll Number: ";
+                std::getline(std::cin, rollNo);
+                Student* s = findStudentByRoll(studentIndex, rollNo);
+                if (!s) { std::cout << "Student not found.\n"; break; }
+                showEligibleCompaniesRanked(companies, *s);
+                break;
+            }
+            case 19:
                 std::cout << "Exiting. Goodbye!\n";
                 return 0;
             default:

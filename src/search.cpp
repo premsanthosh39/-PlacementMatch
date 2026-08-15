@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cctype>
 #include <iostream>
-#include<vector>
+#include <vector>
 #include "student.h"
 #include "company.h"
 

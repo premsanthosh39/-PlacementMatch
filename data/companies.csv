@@ -1,1 +1,9 @@
- 
+Name,MinCGPA,MaxBacklogs,Branches,Package,Role,EligibleGradYear
+TI,7.5,0,"CSE,ECE",24,SDE,2026
+Google,8.5,0,"CSE,IT",45,SWE,2026
+Amazon,8.0,0,"CSE,IT,ECE",32,SDE-1,2026
+Microsoft,8.2,0,"CSE,IT",40,SWE,2026
+Infosys,6.0,2,"CSE,ECE,MECH,IT,EEE",6.5,Analyst,2026
+Atlassian,8.5,0,"CSE,IT",38,SDE,2026
+Qualcomm,7.8,0,"ECE,EEE",22,Hardware Engineer,2027
+Zoho,7.0,1,"CSE,IT",10,Developer,2026
