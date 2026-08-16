@@ -1,0 +1,30 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        run: sudo apt-get update && sudo apt-get install -y cmake g++
+
+      - name: Configure CMake
+        run: cmake -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run unit tests
+        run: ./build/run_tests
+
+      - name: Run integration tests
+        run: ./build/run_integration_tests
