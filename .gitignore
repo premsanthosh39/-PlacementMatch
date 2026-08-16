@@ -1,0 +1,8 @@
+# CMake build files
+build/
+
+# Compiled executables
+*.exe
+
+# Runtime logs
+logs/*.log

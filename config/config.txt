@@ -1,0 +1,4 @@
+students_file=data/students.csv
+companies_file=data/companies.csv
+applications_file=data/applications.csv
+log_file=logs/app.log

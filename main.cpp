@@ -9,13 +9,13 @@
 #include "utils/trie.h"
 #include "strategies/eligibilitystrategy.h"
 #include "utils/logger.h"
-
+#include "utils/config.h" 
 #include <iostream>
 #include <limits>
 #include <unordered_map>
-#include<queue>
-#include<utility>
-#include<algorithm>
+#include <queue>
+#include <utility>
+#include <algorithm>
 
 void findCompaniesWithMinPackage(std::vector<Company>& companies, double minPackage) {
     std::sort(companies.begin(), companies.end(),
@@ -133,9 +133,16 @@ void showEligibleCompaniesRanked(std::vector<Company>& companies, Student& stude
 }
 
 int main() {
-    std::vector<Student> students = loadStudents("data/students.csv");
-    std::vector<Company> companies = loadCompanies("data/companies.csv");
-    std::vector<Application> applications = loadApplications("data/applications.csv");
+    Config config;
+    config.load("config/config.txt");
+
+    std::string studentsFile = config.get("students_file", "data/students.csv");
+    std::string companiesFile = config.get("companies_file", "data/companies.csv");
+    std::string applicationsFile = config.get("applications_file", "data/applications.csv");
+
+    std::vector<Student> students = loadStudents(studentsFile);
+    std::vector<Company> companies = loadCompanies(companiesFile);
+    std::vector<Application> applications = loadApplications(applicationsFile);
 
     std::unordered_map<std::string, Student*> studentIndex;
     for (auto& s : students) studentIndex[s.get_Roll_No()] = &s;
@@ -181,7 +188,7 @@ int main() {
         switch (choice) {
             case 1: {
                 registerstudents(students);
-                saveStudents(students, "data/students.csv");
+                saveStudents(students, studentsFile);
                 studentIndex.clear();
                 for (auto& s : students) studentIndex[s.get_Roll_No()] = &s;
                 studentNameTrie.insert(students.back().get_Name());
@@ -190,7 +197,7 @@ int main() {
             }
             case 2: {
                 registercompanies(companies);
-                saveCompanies(companies, "data/companies.csv");
+                saveCompanies(companies, companiesFile);
                 companyIndex.clear();
                 for (auto& c : companies) companyIndex[c.get_Company_Name()] = &c;
                 logevent("Company registered: " + companies.back().get_Company_Name());
@@ -258,7 +265,7 @@ int main() {
                 std::cout << "Enter Company Name to apply to: ";
                 std::getline(std::cin, companyName);
                 bool success = applytocompany(applications, students, companies, rollNo, companyName);
-                saveApplications(applications, "data/applications.csv");
+                saveApplications(applications, applicationsFile);
                 if (success) logevent("Application submitted: " + rollNo + " -> " + companyName);
                 break;
             }
@@ -286,7 +293,7 @@ int main() {
                 std::cout << "Enter Roll Number to update: ";
                 std::getline(std::cin, rollNo);
                 updateStudent(students, rollNo);
-                saveStudents(students, "data/students.csv");
+                saveStudents(students, studentsFile);
                 studentIndex.clear();
                 for (auto& s : students) studentIndex[s.get_Roll_No()] = &s;
                 break;
@@ -297,7 +304,7 @@ int main() {
                 std::cout << "Enter Roll Number to delete: ";
                 std::getline(std::cin, rollNo);
                 deleteStudent(students, rollNo);
-                saveStudents(students, "data/students.csv");
+                saveStudents(students, studentsFile);
                 studentIndex.clear();
                 for (auto& s : students) studentIndex[s.get_Roll_No()] = &s;
                 break;
@@ -308,7 +315,7 @@ int main() {
                 std::cout << "Enter Company Name to update: ";
                 std::getline(std::cin, name);
                 updateCompany(companies, name);
-                saveCompanies(companies, "data/companies.csv");
+                saveCompanies(companies, companiesFile);
                 companyIndex.clear();
                 for (auto& c : companies) companyIndex[c.get_Company_Name()] = &c;
                 break;
@@ -319,7 +326,7 @@ int main() {
                 std::cout << "Enter Company Name to delete: ";
                 std::getline(std::cin, name);
                 deleteCompany(companies, name);
-                saveCompanies(companies, "data/companies.csv");
+                saveCompanies(companies, companiesFile);
                 companyIndex.clear();
                 for (auto& c : companies) companyIndex[c.get_Company_Name()] = &c;
                 break;
@@ -334,7 +341,7 @@ int main() {
                 std::cout << "Enter new status (Applied/Shortlisted/Rejected/Selected): ";
                 std::getline(std::cin, status);
                 updateApplicationStatus(applications, rollNo, companyName, status);
-                saveApplications(applications, "data/applications.csv");
+                saveApplications(applications, applicationsFile);
                 logevent("Application status updated: " + rollNo + " -> " + companyName + " : " + status);
                 break;
             }
@@ -346,7 +353,7 @@ int main() {
                 std::cout << "Enter Company Name: ";
                 std::getline(std::cin, companyName);
                 deleteApplication(applications, rollNo, companyName);
-                saveApplications(applications, "data/applications.csv");
+                saveApplications(applications, applicationsFile);
                 break;
             }
             case 18: {
@@ -360,10 +367,10 @@ int main() {
                 break;
             }
             case 19: {
-                double minpackage;
+                double minPkg;
                 std::cout << "Enter minimum package (LPA): ";
-                std::cin >> minpackage;
-                findCompaniesWithMinPackage(companies, minpackage);
+                std::cin >> minPkg;
+                findCompaniesWithMinPackage(companies, minPkg);
                 break;
             }
             case 20:
