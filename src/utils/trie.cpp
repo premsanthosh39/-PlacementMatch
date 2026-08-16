@@ -1,4 +1,4 @@
-#include "trie.h"
+#include "utils/trie.h"
 #include<algorithm>
 #include<cctype>
 

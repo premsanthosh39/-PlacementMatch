@@ -1,7 +1,7 @@
 #ifndef COMPANYREGISTRATION_H
 #define COMPANYREGISTRATION_H
 
-#include "company.h"
+#include "models/company.h"
 #include <vector>
 
 bool companynameexists(const std::vector<Company>& companies,

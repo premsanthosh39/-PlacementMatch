@@ -1,10 +1,10 @@
-#include "search.h"
+#include "services/search.h"
 #include <algorithm>
 #include <cctype>
 #include <iostream>
 #include <vector>
-#include "student.h"
-#include "company.h"
+#include "models/student.h"
+#include "models/company.h"
 
 std::string toLower(std::string s) {
     std::transform(s.begin(), s.end(), s.begin(), ::tolower);

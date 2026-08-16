@@ -1,7 +1,7 @@
 #ifndef ELIGIBILITYCHECKER_H
 #define ELIGIBILITYCHECKER_H
-#include "student.h"
-#include "company.h"
+#include "models/student.h"
+#include "models/company.h"
 #include<string>
 struct eligibilityresult{
     bool eligible;

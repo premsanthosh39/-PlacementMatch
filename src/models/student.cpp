@@ -1,4 +1,4 @@
-#include "student.h"
+#include "models/student.h"
 #include<iostream>
 //RETURNING THE GETTERS
 Student::Student(std::string Roll_No,std::string Name,double Cgpa,std::string Branch,int Backlogs,std::vector<std::string> Skills,int Graduation_Year) :Roll_No(Roll_No),Name(Name),Cgpa(Cgpa),Branch(Branch),Backlogs(Backlogs),Skills(Skills),Graduation_Year(Graduation_Year){}

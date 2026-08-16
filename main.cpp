@@ -1,17 +1,42 @@
-#include "student.h"
-#include "company.h"
-#include "search.h"
-#include "registration.h"
-#include "companyregistration.h"
-#include "eligibilitychecker.h"
-#include "csvstorage.h"
-#include "applicationsystem.h"
-#include "trie.h"
+#include "models/student.h"
+#include "models/company.h"
+#include "services/search.h"
+#include "services/registration.h"
+#include "services/companyregistration.h"
+#include "services/eligibilitychecker.h"
+#include "services/csvstorage.h"
+#include "services/applicationsystem.h"
+#include "utils/trie.h"
+#include "strategies/eligibilitystrategy.h"
+#include "utils/logger.h"
+
 #include <iostream>
 #include <limits>
 #include <unordered_map>
 #include<queue>
 #include<utility>
+#include<algorithm>
+
+void findCompaniesWithMinPackage(std::vector<Company>& companies, double minPackage) {
+    std::sort(companies.begin(), companies.end(),
+        [](const Company& a, const Company& b) {
+            return a.get_Packages() < b.get_Packages();
+        });
+
+    auto it = std::lower_bound(companies.begin(), companies.end(), minPackage,
+        [](const Company& c, double value) {
+            return c.get_Packages() < value;
+        });
+
+    std::cout << "\nCompanies with package >= " << minPackage << " LPA:\n";
+    if (it == companies.end()) {
+        std::cout << "None found.\n";
+        return;
+    }
+    for (auto iter = it; iter != companies.end(); ++iter) {
+        iter->display();
+    }
+}
 
 Student* findStudentByRoll(std::unordered_map<std::string, Student*>& index, const std::string& rollNo) {
     auto it = index.find(rollNo);
@@ -36,6 +61,7 @@ void updateStudent(std::vector<Student>& students, const std::string& rollNo) {
             s.set_Backlogs(newBacklogs);
             s.set_Graduation_Year(newYear);
             std::cout << "Student updated.\n";
+            logevent("Student updated: " + rollNo);
             return;
         }
     }
@@ -47,6 +73,7 @@ void deleteStudent(std::vector<Student>& students, const std::string& rollNo) {
         if (it->get_Roll_No() == rollNo) {
             students.erase(it);
             std::cout << "Student deleted.\n";
+            logevent("Student deleted: " + rollNo);
             return;
         }
     }
@@ -66,6 +93,7 @@ void updateCompany(std::vector<Company>& companies, const std::string& name) {
             c.set_Packages(newPackage);
             c.set_Eligible_Graduation_Year(newYear);
             std::cout << "Company updated.\n";
+            logevent("Company updated: " + name);
             return;
         }
     }
@@ -77,6 +105,7 @@ void deleteCompany(std::vector<Company>& companies, const std::string& name) {
         if (it->get_Company_Name() == name) {
             companies.erase(it);
             std::cout << "Company deleted.\n";
+            logevent("Company deleted: " + name);
             return;
         }
     }
@@ -102,6 +131,7 @@ void showEligibleCompaniesRanked(std::vector<Company>& companies, Student& stude
         pq.pop();
     }
 }
+
 int main() {
     std::vector<Student> students = loadStudents("data/students.csv");
     std::vector<Company> companies = loadCompanies("data/companies.csv");
@@ -135,8 +165,9 @@ int main() {
         std::cout << "15. Delete Company\n";
         std::cout << "16. Update Application Status\n";
         std::cout << "17. Delete/Withdraw Application\n";
-        std::cout << "18. Eligible companies for a student\n";
-        std::cout << "19. Exit\n";
+        std::cout << "18. Eligible Companies for a Student (Ranked)\n";
+        std::cout << "19. Companies with Minimum Package (Binary Search)\n";
+        std::cout << "20. Exit\n";
         std::cout << "Enter choice: ";
 
         int choice;
@@ -154,6 +185,7 @@ int main() {
                 studentIndex.clear();
                 for (auto& s : students) studentIndex[s.get_Roll_No()] = &s;
                 studentNameTrie.insert(students.back().get_Name());
+                logevent("Student registered: " + students.back().get_Roll_No());
                 break;
             }
             case 2: {
@@ -161,6 +193,7 @@ int main() {
                 saveCompanies(companies, "data/companies.csv");
                 companyIndex.clear();
                 for (auto& c : companies) companyIndex[c.get_Company_Name()] = &c;
+                logevent("Company registered: " + companies.back().get_Company_Name());
                 break;
             }
             case 3: {
@@ -176,7 +209,15 @@ int main() {
                 if (!s) { std::cout << "Student not found.\n"; break; }
                 if (!c) { std::cout << "Company not found.\n"; break; }
 
-                eligibilityresult r = eligibilitychecker(*s, *c);
+                std::cout << "Use (1) Standard or (2) Strict eligibility rules? ";
+                int ruleChoice;
+                std::cin >> ruleChoice;
+                std::string strategyType = (ruleChoice == 2) ? "strict" : "standard";
+
+                EligibilityStrategy* strategy = EligibilityStrategyFactory::create(strategyType);
+                eligibilityresult r = strategy->evaluate(*s, *c);
+                delete strategy;
+
                 if (r.eligible) std::cout << s->get_Name() << " is ELIGIBLE for " << c->get_Company_Name() << "!\n";
                 else std::cout << s->get_Name() << " is NOT eligible: " << r.result << "\n";
                 break;
@@ -216,8 +257,9 @@ int main() {
                 std::getline(std::cin, rollNo);
                 std::cout << "Enter Company Name to apply to: ";
                 std::getline(std::cin, companyName);
-                applytocompany(applications, students, companies, rollNo, companyName);
+                bool success = applytocompany(applications, students, companies, rollNo, companyName);
                 saveApplications(applications, "data/applications.csv");
+                if (success) logevent("Application submitted: " + rollNo + " -> " + companyName);
                 break;
             }
             case 10: {
@@ -293,6 +335,7 @@ int main() {
                 std::getline(std::cin, status);
                 updateApplicationStatus(applications, rollNo, companyName, status);
                 saveApplications(applications, "data/applications.csv");
+                logevent("Application status updated: " + rollNo + " -> " + companyName + " : " + status);
                 break;
             }
             case 17: {
@@ -316,7 +359,14 @@ int main() {
                 showEligibleCompaniesRanked(companies, *s);
                 break;
             }
-            case 19:
+            case 19: {
+                double minpackage;
+                std::cout << "Enter minimum package (LPA): ";
+                std::cin >> minpackage;
+                findCompaniesWithMinPackage(companies, minpackage);
+                break;
+            }
+            case 20:
                 std::cout << "Exiting. Goodbye!\n";
                 return 0;
             default:

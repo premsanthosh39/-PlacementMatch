@@ -1,10 +1,10 @@
 #ifndef CSVSTORAGE_H
 #define CSVSTORAGE_H
-#include "student.h"
-#include "company.h"
+#include "models/student.h"
+#include "models/company.h"
 #include <vector>
 #include <string>
-#include "application.h"
+#include "models/application.h"
 
 std::vector<Application> loadApplications(const std::string& filename);
 void saveApplications(const std::vector<Application>& apps, const std::string& filename);

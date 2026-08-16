@@ -1,8 +1,8 @@
 #ifndef APPLICATIONSYSTEM_H
 #define APPLICATIONSYSTEM_H
-#include "application.h"
-#include "student.h"
-#include "company.h"
+#include "models/application.h"
+#include "models/student.h"
+#include "models/company.h"
 #include <vector>
 
 bool applicationexists(const std::vector<Application>& apps, const std::string& roll_no, const std::string& company_name);

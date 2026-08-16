@@ -1,4 +1,4 @@
-#include "company.h"
+#include "models/company.h"
 #include<iostream>
 #include<algorithm>//FOR FIND FUNCTION WE USED IT 
 //CONSTRUCTOR INITIALIZATION

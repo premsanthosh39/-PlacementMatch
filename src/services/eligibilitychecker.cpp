@@ -1,4 +1,4 @@
-#include "eligibilitychecker.h"
+#include "services/eligibilitychecker.h"
 eligibilityresult eligibilitychecker(const Student& s,const Company& c){
     if(s.get_Cgpa()<c.get_min_Cgpa()){
         return {false , "Cgpa is below company requirements("+std::to_string(c.get_min_Cgpa())+")\n"};

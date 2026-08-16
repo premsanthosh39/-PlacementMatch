@@ -1,7 +1,7 @@
 #ifndef SEARCH_H
 #define SEARCH_H
-#include "student.h"
-#include "company.h"
+#include "models/student.h"
+#include "models/company.h"
 #include <vector>
 #include <string>
 
